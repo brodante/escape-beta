@@ -1,6 +1,6 @@
 import { customAlphabet } from "nanoid";
 import { eq } from "drizzle-orm";
-import { db } from "@/db";
+import { db, dbReady } from "@/db";
 import { actionLogs, players as playersTable, rooms as roomsTable } from "@/db/schema";
 import { getScenario } from "@/server/scenarios";
 import type { InternalData, ScenarioPlayer } from "@/server/scenarios/types";
