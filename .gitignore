@@ -27,3 +27,4 @@ drizzle/
 .vscode/*
 !.vscode/extensions.json
 .idea/
+tsconfig.tsbuildinfo
