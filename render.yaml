@@ -1,0 +1,31 @@
+# ---------------------------------------------------------------------------
+# Nexus Protocol — Render blueprint (app + managed Postgres).
+# Deploy: push this file to GitHub, then in Render: New → Blueprint → pick repo.
+# After the database is created, run the one-time schema push from your laptop:
+#   DATABASE_URL="<External Database URL from Render>" npx drizzle-kit push
+# Then every push to main auto-deploys. See README.md "Deploying" for the
+# custom-subdomain steps.
+# ---------------------------------------------------------------------------
+
+services:
+  - type: web
+    name: nexus-protocol
+    runtime: node
+    plan: free # 'starter' ($6/mo) if you want always-on (free sleeps after 15 min idle)
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: nexus-protocol-db
+          property: connectionString
+
+databases:
+  - name: nexus-protocol-db
+    plan: free # NOTE: Render's free Postgres expires after 30 days; use 'starter' for permanent
+    databaseName: nexus
+    user: nexus
